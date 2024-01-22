@@ -1,0 +1,17 @@
+---
+- name: Login to Crafty API
+  ansible.builtin.uri:
+    url: "{{ api_server }}{{ api_endpoint }}/auth/login"
+    method: POST
+    body_format: json
+    body:
+      username: "{{ api_user }}"
+      password: "{{ api_pass }}"
+    validate_certs: false
+  register: results
+
+- name: Save token
+  ansible.builtin.set_fact:
+    token: "{{ results.json.data.token }}"
+
+...

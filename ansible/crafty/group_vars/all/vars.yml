@@ -1,0 +1,6 @@
+---
+api_server: "https://192.168.50.30:8443"
+api_endpoint: "/api/v2"
+api_user: admin
+api_pass: "{{ vault_api_pass }}"
+...
