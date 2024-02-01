@@ -16,6 +16,7 @@ This is my repository for my Homelab escapades.  For now, it's mostly for me to 
 ### Planned Services:
 - Redundant PiHole
 - Reverse Proxy (Nginx Proxy Manager probably)
+- Gitea (maybe with clones/backups of my GitHub repos)
 
 ### Workflow:
 
