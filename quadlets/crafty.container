@@ -1,0 +1,21 @@
+# crafty.container
+[Install]
+WantedBy=default.target
+
+[Container]
+ContainerName=crafty
+Environment=TZ=America/Chicago
+Image=registry.gitlab.com/crafty-controller/crafty-4:latest
+PublishPort=8000:8000
+PublishPort=8443:8443
+PublishPort=8123:8123
+PublishPort=19132:19132/udp
+PublishPort=25500-25600:25500-25600
+Volume=/home/damien/crafty/volumes/backups:/crafty/backups:Z
+Volume=/home/damien/crafty/volumes/logs:/crafty/logs:Z
+Volume=/home/damien/crafty/volumes/servers:/crafty/servers:Z
+Volume=/home/damien/crafty/volumes/config:/crafty/app/config:Z
+Volume=/home/damien/crafty/volumes/import:/crafty/import:Z
+
+[Service]
+Restart=always

@@ -1,0 +1,14 @@
+# homepage.container
+[Install]
+WantedBy=default.target
+
+[Container]
+ContainerName=homepage
+Environment=PUID=1000 PGID=1000
+Image=ghcr.io/gethomepage/homepage:latest
+PublishPort=3000:3000
+Volume=/home/damien/homepage/volumes/config:/app/config:Z
+
+[Service]
+Restart=always
+

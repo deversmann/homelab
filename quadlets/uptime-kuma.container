@@ -1,0 +1,13 @@
+# uptime-kuma.container
+[Install]
+WantedBy=default.target
+
+[Container]
+ContainerName=uptime-kuma
+Image=louislam/uptime-kuma:1
+PublishPort=3001:3001
+Volume=/home/damien/uptime-kuma/volumes/data:/app/data:Z
+
+[Service]
+Restart=always
+

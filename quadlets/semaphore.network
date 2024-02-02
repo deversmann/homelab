@@ -1,0 +1,4 @@
+# semaphore.network
+[Network]
+Gateway=10.89.0.1
+Subnet=10.89.0.0/24
