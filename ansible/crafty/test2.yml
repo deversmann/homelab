@@ -1,0 +1,15 @@
+---
+- name: Test2
+  become: false
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Ping
+      ansible.builtin.command: "true"
+      register: result
+      retries: 3
+      # until: result.stderr == 'xyz'
+
+    - debug: var=result
+        

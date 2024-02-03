@@ -1,0 +1,33 @@
+---
+- name: Check vars
+  ansible.builtin.include_tasks:
+    vars-check.yml
+  when: crafty_vars_checked is undefined
+
+- name: Authenticate if necessary
+  ansible.builtin.include_tasks:
+    authenticate.yml
+  when: crafty_token is undefined
+
+- name: Get server stats
+  ansible.builtin.uri:
+    url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}/servers/{{ crafty_server_id }}/stats"
+    method: GET
+    headers:
+      Authorization: "{{ crafty_token }}"
+    validate_certs: "{{ crafty_api_validate_certs }}"
+  delegate_to: localhost
+  register: results
+
+- name: Save server stats
+  ansible.builtin.set_fact:
+    crafty_server_stats:
+      server_id: "{{ results | json_query('json.data.server_id.server_id') }}"
+      server_name: "{{ results | json_query('json.data.server_id.server_name') }}"
+      server_port: "{{ results | json_query('json.data.server_id.server_port') }}"
+      server_uuid: "{{ results | json_query('json.data.server_id.server_uuid') }}"
+      running: "{{ results | json_query('json.data.running') }}"
+      uptime: "{{ (((results | json_query('date') | to_datetime('%a, %d %b %Y %H:%M:%S %Z'))
+        - (results | json_query('json.data.started') | to_datetime ))
+        .total_seconds()/86400)
+        | round(2, 'common') }} days"

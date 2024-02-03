@@ -1,0 +1,21 @@
+---
+- name: Check vars
+  ansible.builtin.include_tasks:
+    vars-check.yml
+  when: crafty_vars_checked is undefined
+
+- name: Login to Crafty API
+  ansible.builtin.uri:
+    url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}/auth/login"
+    method: POST
+    body_format: json
+    body:
+      username: "{{ crafty_api_user }}"
+      password: "{{ crafty_api_pass }}"
+    validate_certs: "{{ crafty_api_validate_certs }}"
+  delegate_to: localhost
+  register: results
+
+- name: Save token
+  ansible.builtin.set_fact:
+    crafty_token: "{{ results.json.data.token }}"

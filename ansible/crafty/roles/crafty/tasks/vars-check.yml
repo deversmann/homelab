@@ -1,0 +1,15 @@
+---
+- name: Check required vars
+  ansible.builtin.assert:
+    that:
+      - crafty_api_server != ""
+      - crafty_api_endpoint != ""
+      - crafty_api_user != ""
+      - crafty_api_pass != ""
+    fail_msg: "Vars: crafty_api_server, crafty_api_endpoint, crafty_api_user and crafty_api_pass must be set"
+
+- name: Save results
+  ansible.builtin.set_fact:
+    crafty_vars_checked: true
+
+...

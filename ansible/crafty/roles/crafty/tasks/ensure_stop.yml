@@ -1,0 +1,30 @@
+---
+- name: Check vars
+  ansible.builtin.include_tasks:
+    vars-check.yml
+  when: crafty_vars_checked is undefined
+
+- name: Authenticate if necessary
+  ansible.builtin.include_tasks:
+    authenticate.yml
+  when: crafty_token is undefined
+
+- name: Test for stoppage
+  ansible.builtin.uri:
+    url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}/servers/{{ crafty_server_id }}/stats"
+    method: GET
+    headers:
+      Authorization: "{{ crafty_token }}"
+    validate_certs: "{{ crafty_api_validate_certs }}"
+  delegate_to: localhost
+  register: results
+  until: not (results | json_query('json.data.running'))
+  retries: 5
+  delay: 5
+  ignore_errors: true
+
+- name: Check results
+  ansible.builtin.assert:
+    that: not (results | json_query('json.data.running'))
+    fail_msg: "Could not validate that server {{ crafty_server_id }} is stopped in the allowed time"
+    success_msg: "Server {{ crafty_server_id }} is stopped"

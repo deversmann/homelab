@@ -1,6 +1,6 @@
 ---
-api_server: "https://192.168.50.30:8443"
-api_endpoint: "/api/v2"
-api_user: admin
-api_pass: "{{ vault_api_pass }}"
+crafty_api_server: "https://192.168.50.30:8443"
+crafty_api_endpoint: "/api/v2"
+crafty_api_user: admin
+crafty_api_pass: "{{ vault_api_pass }}"
 ...

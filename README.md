@@ -63,3 +63,4 @@ This is my repository for my Homelab escapades.  For now, it's mostly for me to 
 - https://wiki.craftycontrol.com/en/4/docs/API%20V2
 - https://www.procustodibus.com/blog/2022/09/wireguard-port-forward-from-internet/
 - https://github.com/mochman/Bypass_CGNAT
+- https://crates.io/crates/podlet

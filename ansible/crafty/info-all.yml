@@ -1,0 +1,16 @@
+---
+- name: Info on All Crafty Servers
+  become: false
+  hosts: container_host
+  gather_facts: false
+
+  tasks:
+    - name: Authentication
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: authenticate.yml
+
+    - name: List
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: list.yml

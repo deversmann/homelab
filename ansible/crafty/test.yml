@@ -1,0 +1,29 @@
+---
+- name: Crafty Server API Playground
+  become: false
+  hosts: container_host
+  gather_facts: false
+
+  vars:
+    crafty_server_id: 1
+
+  tasks:
+    - name: Stop
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: stop.yml
+
+    - name: Ensure Stoppage
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: ensure_stop.yml
+
+    - name: Start
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: start.yml
+
+    - name: Ensure Startage
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: ensure_start.yml

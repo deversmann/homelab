@@ -1,0 +1,21 @@
+---
+- name: Check vars
+  ansible.builtin.include_tasks:
+    vars-check.yml
+  when: crafty_vars_checked is undefined
+
+- name: Authenticate if necessary
+  ansible.builtin.include_tasks:
+    authenticate.yml
+  when: crafty_token is undefined
+
+- name: Stop server
+  ansible.builtin.uri:
+    url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}/servers/{{ crafty_server_id }}/action/stop_server"
+    method: POST
+    headers:
+      Authorization: "{{ crafty_token }}"
+    validate_certs: "{{ crafty_api_validate_certs }}"
+  delegate_to: localhost
+
+...

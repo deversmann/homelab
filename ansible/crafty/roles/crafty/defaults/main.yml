@@ -1,0 +1,7 @@
+---
+crafty_api_server: ""
+crafty_api_endpoint: ""
+crafty_api_user: ""
+crafty_api_pass: ""
+crafty_api_validate_certs: false
+...
