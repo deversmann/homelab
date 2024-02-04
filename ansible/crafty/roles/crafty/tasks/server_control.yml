@@ -1,0 +1,47 @@
+---
+- name: Initialize token if necessary
+  ansible.builtin.include_tasks:
+    init_token.yml
+  when: crafty_token is undefined
+
+- name: Check current state
+  ansible.builtin.include_tasks:
+    stats.yml
+
+- name: Perform change if needed
+  when: crafty_server_running != crafty_server_stats.running
+  block:
+    - name: Control server
+      ansible.builtin.uri:
+        url: "{{ crafty_api_base_url }}/servers/{{ crafty_server_id }}/action/{{ crafty_server_running | ternary('start_server', 'stop_server') }}"
+        method: POST
+        headers:
+          Authorization: "{{ crafty_token }}"
+        validate_certs: "{{ crafty_api_validate_certs }}"
+      delegate_to: localhost
+
+    - name: Check for changed state
+      ansible.builtin.uri:
+        url: "{{ crafty_api_base_url }}/servers/{{ crafty_server_id }}/stats"
+        method: GET
+        headers:
+          Authorization: "{{ crafty_token }}"
+        validate_certs: "{{ crafty_api_validate_certs }}"
+      delegate_to: localhost
+      register: results
+      until: crafty_server_running == (results | json_query('json.data.running'))
+      retries: 5
+      delay: 5
+      ignore_errors: true
+      changed_when: crafty_server_running == (results | json_query('json.data.running'))
+
+    - name: Check current state
+      ansible.builtin.include_tasks:
+        stats.yml
+
+    - name: Check results
+      ansible.builtin.assert:
+        that: crafty_server_running == crafty_server_stats.running
+        fail_msg: "Could not validate that server {{ crafty_server_id }} {{ crafty_server_running | ternary('started', 'stopped') }} in the allowed time"
+
+...

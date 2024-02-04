@@ -1,0 +1,31 @@
+---
+- name: Check required vars
+  ansible.builtin.assert:
+    that:
+      - crafty_api_server != ""
+      - crafty_api_endpoint != ""
+      - crafty_api_user != ""
+      - crafty_api_pass != ""
+    fail_msg: "Vars: crafty_api_server, crafty_api_endpoint, crafty_api_user and crafty_api_pass must be set"
+
+- name: Set API URL
+  ansible.builtin.set_fact:
+    crafty_api_base_url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}"
+
+- name: Login to Crafty API
+  ansible.builtin.uri:
+    url: "{{ crafty_api_base_url }}/auth/login"
+    method: POST
+    body_format: json
+    body:
+      username: "{{ crafty_api_user }}"
+      password: "{{ crafty_api_pass }}"
+    validate_certs: "{{ crafty_api_validate_certs }}"
+  delegate_to: localhost
+  register: results
+
+- name: Save token
+  ansible.builtin.set_fact:
+    crafty_token: "{{ results.json.data.token }}"
+
+...

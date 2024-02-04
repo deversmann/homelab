@@ -8,22 +8,38 @@
     crafty_server_id: 1
 
   tasks:
+    - name: Start
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: server_control.yml
+      vars:
+        crafty_server_running: true
+
     - name: Stop
       ansible.builtin.include_role:
         name: crafty
-        tasks_from: stop.yml
+        tasks_from: server_control.yml
+      vars:
+        crafty_server_running: false
 
-    - name: Ensure Stoppage
+    - name: Debug
+      ansible.builtin.debug:
+        var: crafty_server_stats
+
+    - name: Stop
       ansible.builtin.include_role:
         name: crafty
-        tasks_from: ensure_stop.yml
+        tasks_from: server_control.yml
+      vars:
+        crafty_server_running: false
 
     - name: Start
       ansible.builtin.include_role:
         name: crafty
-        tasks_from: start.yml
+        tasks_from: server_control.yml
+      vars:
+        crafty_server_running: true
 
-    - name: Ensure Startage
-      ansible.builtin.include_role:
-        name: crafty
-        tasks_from: ensure_start.yml
+    - name: Debug
+      ansible.builtin.debug:
+        var: crafty_server_stats

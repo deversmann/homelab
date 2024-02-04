@@ -1,17 +1,12 @@
 ---
-- name: Check vars
+- name: Initialize token if necessary
   ansible.builtin.include_tasks:
-    vars-check.yml
-  when: crafty_vars_checked is undefined
-
-- name: Authenticate if necessary
-  ansible.builtin.include_tasks:
-    authenticate.yml
+    init_token.yml
   when: crafty_token is undefined
 
 - name: Get server list
   ansible.builtin.uri:
-    url: "{{ crafty_api_server }}{{ crafty_api_endpoint }}/servers"
+    url: "{{ crafty_api_base_url }}/servers"
     method: GET
     headers:
       Authorization: "{{ crafty_token }}"
