@@ -5,12 +5,21 @@
   gather_facts: false
 
   tasks:
-    - name: Authentication
-      ansible.builtin.include_role:
-        name: crafty
-        tasks_from: authenticate.yml
-
     - name: List
       ansible.builtin.include_role:
         name: crafty
         tasks_from: list.yml
+
+    - name: Get info on all
+      ansible.builtin.include_role:
+        name: crafty
+        tasks_from: stats.yml
+      loop: "{{ crafty_server_ids }}"
+      vars:
+        crafty_server_id: "{{ item }}"
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: crafty_server_stats_dict
+
+...

@@ -25,3 +25,10 @@
       # uptime: "{{ (((results | json_query('date') | to_datetime('%a, %d %b %Y %H:%M:%S %Z'))
       #   - (results | json_query('json.data.started') | to_datetime )).total_seconds()/86400)
       #   | round(2, 'common') }} days"
+
+- name: Save server stats into dict
+  ansible.builtin.set_fact:
+    crafty_server_stats_dict:
+      "{{ (crafty_server_stats_dict is defined | ternary(crafty_server_stats_dict, dict())) | combine({crafty_server_id: crafty_server_stats}) }}"
+
+...
