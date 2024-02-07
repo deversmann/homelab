@@ -5,12 +5,11 @@ WantedBy=default.target
 [Container]
 ContainerName=semaphore-postgresql
 Environment=POSTGRESQL_USER=semaphore
-Environment=POSTGRESQL_PASSWORD=semaphore
 Environment=POSTGRESQL_DATABASE=semaphore
 Image=rhel9/postgresql-15
 Network=semaphore.network
+Secret=semaphore-db-pass,type=env,target=POSTGRESQL_PASSWORD
 Volume=/home/damien/semaphore/volumes/postgresql-data:/var/lib/pgsql/data:Z
 
 [Service]
 Restart=always
-
