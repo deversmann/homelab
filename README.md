@@ -41,4 +41,4 @@ This is my repository for my Homelab escapades.  For now, it's mostly for me to 
 - https://crates.io/crates/podlet
 - https://www.redhat.com/sysadmin/multi-container-application-podman-quadlet
 - https://www.redhat.com/sysadmin/podman-kubernetes-secrets
-- 
+- https://serverfault.com/questions/1101002/wireguard-client-addition-without-restart
