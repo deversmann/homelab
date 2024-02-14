@@ -57,16 +57,15 @@ flowchart TD
 
 
 ### On private server
-#### Shell commands:
-```shell
-[root@infra-test ~]# hostnamectl set-hostname infra-test
-[root@infra-test ~]# dnf install wireguard-tools
-[root@infra-test ~]# umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null
-[root@infra-test ~]# sudo wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
-[root@infra-test ~]# vi /etc/wireguard/wg0.conf
-[root@infra-test ~]# systemctl start wg-quick@wg0
-[root@infra-test ~]# ping 10.9.8.1
-[root@infra-test ~]# systemctl enable wg-quick@wg0
+#### Shell commands (as root):
+```console
+dnf install wireguard-tools
+umask 077 && printf "[Interface]\nPrivateKey = " | tee /etc/wireguard/wg0.conf > /dev/null
+wg genkey | tee -a /etc/wireguard/wg0.conf | wg pubkey | tee /etc/wireguard/publickey
+vi /etc/wireguard/wg0.conf
+systemctl start wg-quick@wg0
+systemctl enable wg-quick@wg0
+ping 10.9.8.1
 ```
 #### in `/etc/wireguard/wg0.conf`
 ```
@@ -82,20 +81,17 @@ PersistentKeepalive = 25
 ```
 
 ### On public server:
-#### Shell commands:
-```shell
-[root@gaming-test ~]# hostnamectl set-hostname gaming-test
-[root@gaming-test ~]# dnf install wireguard-tools
-[root@gaming-test ~]# umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null
-[root@gaming-test ~]# sudo wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
-[root@gaming-test ~]# vi /etc/wireguard/wg0.conf
-[root@gaming-test ~]# systemctl start wg-quick@wg0
-[root@gaming-test ~]# firewall-cmd --add-port=51820/udp --permanent
-[root@gaming-test ~]# firewall-cmd --reload
-[root@gaming-test ~]# ping 10.9.8.2
-[root@gaming-test ~]# wg syncconf wg0 <(wg-quick strip wg0)
-[root@gaming-test ~]# wg
-[root@gaming-test ~]# systemctl enable wg-quick@wg0
+#### Shell commands (as root):
+```console
+dnf install wireguard-tools
+umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null
+sudo wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
+vi /etc/wireguard/wg0.conf
+systemctl start wg-quick@wg0
+firewall-cmd --add-port=51820/udp --permanent
+firewall-cmd --reload
+systemctl enable wg-quick@wg0
+ping 10.9.8.2
 ```
 #### in `/etc/wireguard/wg0.conf`
 ```
