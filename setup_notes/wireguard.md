@@ -1,4 +1,4 @@
-``` mermaid
+```mermaid
 flowchart TD
     iCli[Internet Client]
     subgraph pubSrv[Public Server]
