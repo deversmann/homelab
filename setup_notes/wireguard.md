@@ -9,28 +9,22 @@ flowchart TD
         subgraph prvSrv[Private Server]
             direction TB
             wg0-node((wg0)):::service
-            revProx{{Reverse 
-                    Proxy 
-                    Container}}
-            services{{Other
-                    Containerized
-                    Services}}
+            revProx{{Reverse \nProxy \nContainer}}
+            services{{Other \nContainerized \nServices}}
         end
         othSrv[[Other Servers]]
     end
     class prvNet network
-
-
-    iCli <--> pubSrv
-    wg0-node -. Wireguard
-                Tunnel .-> wg0-host
+    iCli --> pubSrv
+    wg0-node -.Wireguard \nTunnel.-> wg0-host
     wg0-node <--> revProx
     revProx <--> othSrv
     revProx <--> services
 
     classDef default fill: #666, stroke: #77e, stroke-width: 2px, color: #ccc
-    classDef network fill: #666, stroke: #77e, stroke-width: 2px, color: #ccc, stroke-dasharray: 10  5, stroke-width: 2px
+    classDef network fill: transparent, stroke: #77e, stroke-width: 2px, color: #ccc, stroke-dasharray: 10  5, stroke-width: 2px
     classDef service fill: #ffa, color: #666
+
 ```
 
 
