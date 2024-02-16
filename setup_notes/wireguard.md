@@ -87,9 +87,9 @@ dnf install wireguard-tools
 umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null
 sudo wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
 vi /etc/wireguard/wg0.conf
-systemctl start wg-quick@wg0
 firewall-cmd --add-port=51820/udp --permanent
 firewall-cmd --reload
+systemctl start wg-quick@wg0
 systemctl enable wg-quick@wg0
 ping 10.9.8.2
 ```
@@ -100,7 +100,16 @@ PrivateKey = mKGa9VLa8J2/VNuSLEIuwY2/wdLw4Z2qn2rhdtCvC18=
 ListenPort = 51820
 Address = 10.9.8.1/24
 
+# once for all
+PreUp = sysctl -w net.ipv4.ip_forward=1
+PreUp = iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o wg0 -j MASQUERADE
+
+# one for each port
+PreUp = iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 25565 -j DNAT --to-destination 10.9.8.2
+PostDown = iptables -t nat -D PREROUTING -i eth0 -p tcp --dport 25565 -j DNAT --to-destination 10.9.8.2
+
 [Peer]
 PublicKey = dqcNZBA2gEU9e0n4J9zfzXqwQemcw0QR6JM+bu1RKG0=
-AllowedIPS = 10.9.8.2/32
+AllowedIPs = 10.9.8.2/32
 ```
