@@ -1,0 +1,16 @@
+---
+wireguard_address: 10.11.74.1/24
+wireguard_forwards:
+  - port: 25565
+    protocol: tcp
+    destination: 10.11.74.2
+  - port: 25566
+    protocol: tcp
+    destination: 10.11.74.2
+  - port: 25567
+    protocol: tcp
+    destination: 10.11.74.2
+  - port: 34197
+    protocol: tcp
+    destination: 10.11.74.2
+...

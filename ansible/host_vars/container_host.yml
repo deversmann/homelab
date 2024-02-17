@@ -1,0 +1,8 @@
+---
+wireguard_address: 10.11.74.2/24
+
+crafty_api_server: "https://192.168.50.30:8443"
+crafty_api_endpoint: "/api/v2"
+crafty_api_user: admin
+crafty_api_pass: "{{ vault_api_pass }}"
+...

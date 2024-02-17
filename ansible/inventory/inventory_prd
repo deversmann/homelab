@@ -1,0 +1,13 @@
+[prd]
+container_host ansible_host=192.168.50.30
+external_server ansible_host=gaming.eversmann.xyz
+
+[vpn_public]
+external_server
+
+[vpn_private]
+container_host
+
+[vpn:children]
+vpn_public
+vpn_private

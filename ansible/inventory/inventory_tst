@@ -1,0 +1,15 @@
+[tst]
+tst_external ansible_host=192.168.50.82
+tst_internal1 ansible_host=192.168.50.78
+tst_internal2 ansible_host=192.168.50.101
+
+[vpn_public]
+tst_external
+
+[vpn_private]
+tst_internal1
+tst_internal2
+
+[vpn:children]
+vpn_private
+vpn_public
