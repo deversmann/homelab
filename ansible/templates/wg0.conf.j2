@@ -7,14 +7,16 @@ Address = {{ wireguard_address }}
 {% if 'vpn_public' in group_names %}
 ListenPort = {{ wireguard_port }}
 
+{%   if wireguard_forwards is defined %}
 PreUp = sysctl -w net.ipv4.ip_forward=1
 PreUp = iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
 PostDown = iptables -t nat -D POSTROUTING -o wg0 -j MASQUERADE
 
-{%   for forward in wireguard_forwards %}
+{%     for forward in wireguard_forwards %}
 PreUp = iptables -t nat -A PREROUTING -i {{ ansible_default_ipv4.interface }} -p {{ forward.protocol }} --dport {{ forward.port }} -j DNAT --to-destination {{ forward.destination }}
 PostDown = iptables -t nat -D PREROUTING -i {{ ansible_default_ipv4.interface }} -p {{ forward.protocol }} --dport {{ forward.port }} -j DNAT --to-destination {{ forward.destination }}
-{%   endfor %}
+{%     endfor %}
+{%   endif %}
 {% endif %}
 
 {% for host in ansible_play_hosts %}
