@@ -1,0 +1,70 @@
+---
+- name: Setup wireguard on all vpn members
+  become: true
+  hosts: vpn
+
+  tasks:
+    - name: Install wireguard
+      ansible.builtin.package:
+        name: wireguard-tools
+        state: present
+
+    - name: Open wireguard port in firewall on host
+      when: "'vpn_public' in group_names"
+      ansible.posix.firewalld:
+        port: "{{ wireguard_port }}/udp"
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: Generate private key
+      ansible.builtin.command: "wg genkey"
+      register: result
+      changed_when: false
+
+    - name: Save private key in a fact
+      ansible.builtin.set_fact:
+        wireguard_private_key: "{{ result.stdout }}"
+
+    - name: Generate public key
+      ansible.builtin.command: "wg pubkey"
+      args:
+        stdin: "{{ wireguard_private_key }}"
+      register: result
+      changed_when: false
+
+    - name: Save public key in a fact
+      ansible.builtin.set_fact:
+        wireguard_public_key: "{{ result.stdout }}"
+
+    - name: Create config dir
+      ansible.builtin.file:
+        dest: "/etc/wireguard"
+        state: directory
+        mode: "0700"
+        owner: root
+        group: root
+
+    - name: Write wg0.conf
+      ansible.builtin.template:
+        src: "wg0.conf.j2"
+        dest: "/etc/wireguard/wg0.conf"
+        mode: "0600"
+        owner: root
+        group: root
+
+    - name: Enable and start wireguard
+      ansible.builtin.service:
+        name: wg-quick@wg0
+        state: restarted
+        enabled: true
+
+    - name: Add wireguard interface to firewall
+      ansible.posix.firewalld:
+        interface: wg0
+        zone: public
+        state: enabled
+        permanent: true
+        immediate: true
+
+...

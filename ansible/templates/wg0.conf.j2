@@ -1,0 +1,37 @@
+#jinja2: lstrip_blocks:"True",trim_blocks:"True"
+# {{ ansible_managed }}
+
+[Interface]
+PrivateKey = {{ wireguard_private_key }}
+Address = {{ wireguard_address }}
+{% if 'vpn_public' in group_names %}
+ListenPort = {{ wireguard_port }}
+
+PreUp = sysctl -w net.ipv4.ip_forward=1
+PreUp = iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o wg0 -j MASQUERADE
+
+{%   for forward in wireguard_forwards %}
+PreUp = iptables -t nat -A PREROUTING -i {{ ansible_default_ipv4.interface }} -p {{ forward.protocol }} --dport {{ forward.port }} -j DNAT --to-destination {{ forward.destination }}
+PostDown = iptables -t nat -D PREROUTING -i {{ ansible_default_ipv4.interface }} -p {{ forward.protocol }} --dport {{ forward.port }} -j DNAT --to-destination {{ forward.destination }}
+{%   endfor %}
+{% endif %}
+
+{% for host in ansible_play_hosts %}
+{%   if host != inventory_hostname %}
+{%     if ('vpn_public' in group_names) or ('vpn_public' in hostvars[host].group_names) %}
+[Peer]
+PublicKey = {{ hostvars[host].wireguard_public_key }}
+{%       if 'vpn_public' in group_names %}
+AllowedIPs = {{ hostvars[host].wireguard_address.split("/")[0] }}/32
+{%       else %}
+AllowedIPs = {{ hostvars[host].wireguard_address.split("/")[0].split(".")[0] }}.{{ hostvars[host].wireguard_address.split("/")[0].split(".")[1] }}.{{ hostvars[host].wireguard_address.split("/")[0].split(".")[2] }}.0/{{ hostvars[host].wireguard_address.split("/")[1] }}
+{%       endif %}
+{%       if 'vpn_private' in group_names %}
+Endpoint = {{ wireguard_endpoint }}:{{ wireguard_port }}
+PersistentKeepalive = 25
+{%       endif %}
+{%     endif %}
+{%   endif %}
+
+{% endfor %}
