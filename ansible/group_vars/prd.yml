@@ -1,0 +1,4 @@
+---
+wireguard_endpoint: "gaming.eversmann.xyz"
+wireguard_port: "51820"
+...
