@@ -1,4 +1,4 @@
 ---
-wireguard_endpoint: "192.168.50.82"
+wireguard_endpoint: "192.168.50.96"
 wireguard_port: "51820"
 ...
