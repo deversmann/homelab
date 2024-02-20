@@ -1,14 +1,14 @@
 [tst]
-tst-external ansible_host=192.168.50.96
-tst-internal1 ansible_host=192.168.50.67
-tst-internal2 ansible_host=192.168.50.103
+dagobah ansible_host=192.168.50.96
+corellia ansible_host=192.168.50.67
+utapau ansible_host=192.168.50.103
 
 [vpn_public]
-tst-external
+dagobah
 
 [vpn_private]
-tst-internal1
-tst-internal2
+corellia
+utapau
 
 [vpn:children]
 vpn_private

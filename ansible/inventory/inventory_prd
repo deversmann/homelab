@@ -1,12 +1,12 @@
 [prd]
-container_host ansible_host=192.168.50.30
-external_server ansible_host=gaming.eversmann.xyz
+alderaan ansible_host=192.168.50.30
+yavin ansible_host=gaming.eversmann.xyz
 
 [vpn_public]
-external_server
+yavin
 
 [vpn_private]
-container_host
+alderaan
 
 [vpn:children]
 vpn_public
