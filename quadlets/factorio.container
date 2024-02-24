@@ -1,0 +1,13 @@
+# factorio.container
+[Install]
+WantedBy=default.target
+
+[Container]
+ContainerName=factorio
+Environment=TZ=America/Chicago
+Image=docker.io/factoriotools/factorio:latest
+PublishPort=34197:34197
+Volume=/home/damien/factorio/volumes/factorio:/factorio:Z
+
+[Service]
+Restart=always
