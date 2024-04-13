@@ -1,0 +1,65 @@
+---
+- name: Configure new linux system
+  become: true
+  hosts: all
+
+  # vars_prompt:
+  #   - name: user_name
+  #     prompt: "Limited account user name?"
+  #     private: false
+
+  #   - name: user_pw
+  #     prompt: "Limited account password?"
+  #     confirm: true
+
+  tasks:
+    - name: Set timezone
+      community.general.timezone:
+        name: America/Chicago
+
+    - name: Set hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+  #   - name: Update hosts file
+  #     when: ansible_default_ipv4 is defined
+  #     ansible.builtin.lineinfile:
+  #       dest: /etc/hosts
+  #       line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname }}"
+    # !#! need something for FQDN
+
+    # - name: Limited account
+    #   ansible.builtin.user:
+    #     name: "{{ user_name }}"
+    #     state: present
+    #     password: "{{ user_pw | password_hash('sha512')}}"
+    #     groups: wheel
+
+    # - name: add authorized keys for new user
+    #   authorized_key:
+    #     user: "{{ user_name }}"
+    #     key: "{{ lookup('file', sshpub_location) }}"
+
+#     - name: Secure sshd
+#       ansible.builtin.lineinfile:
+#         dest: /etc/ssh/sshd_config
+#         regexp: "{{ item.regexp }}"
+#         line: "{{ item.line }}"
+#       loop:
+#         - regexp: "^PermitRootLogin"
+#           line: "PermitRootLogin no"
+#         - regexp: "^PasswordAuthentication"
+#           line: "PasswordAuthentication no"
+#         - regexp: "^AddressFamily"
+#           line: "AddressFamily inet"
+#       notify: Restart sshd
+
+#     # fail2ban?
+
+#   handlers:
+#     - name: Restart sshd
+#       ansible.builtin.service:
+#         name: sshd
+#         state: restarted
+
+...
