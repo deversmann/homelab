@@ -1,5 +1,5 @@
 [tst]
-dagobah ansible_host=192.168.50.96
+dagobah ansible_host=192.168.50.90
 corellia ansible_host=192.168.50.67
 utapau ansible_host=192.168.50.103
 

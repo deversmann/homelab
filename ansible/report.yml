@@ -1,0 +1,42 @@
+---
+- name: Inventory report
+  hosts: all
+  gather_facts: true
+
+  pre_tasks:
+    - name: Ensure Reports directories exist
+      ansible.builtin.file:
+        state: directory
+        path: "{{ playbook_dir }}/reports/fragments/"
+      delegate_to: localhost
+      run_once: true
+
+    - name: Ensure fragments directory is empty
+      ansible.builtin.file:
+        state: absent
+        path: "{{ playbook_dir }}/reports/fragments/*"
+      delegate_to: localhost
+      run_once: true
+
+  tasks:
+    - name: Render the Host Report Template
+      ansible.builtin.template:
+        src: "templates/report-fragment.csv.j2"
+        dest: "{{ playbook_dir }}/reports/fragments/{{ inventory_hostname }}-fragment.csv"
+      delegate_to: localhost
+
+    - name: Assemble all the csv files 
+      ansible.builtin.assemble: 
+        src: "{{ playbook_dir }}/reports/fragments/"
+        dest: "{{ playbook_dir }}/reports/report.csv"
+      delegate_to: localhost
+      run_once: true 
+
+    - name: Append the header to the csv file
+      ansible.builtin.lineinfile:
+        dest: "{{ playbook_dir }}/reports/report.csv"
+        insertbefore: BOF
+        line: "Hostname,Default IP,Default MAC,All IPs,OS Distro,OS Version,Kernel"
+      delegate_to: localhost
+      run_once: true
+...
