@@ -12,7 +12,7 @@ Starting in October 2026, this will be the new home for all things home lab and 
 - [ ] Implement Network Definitions
 
 ### NAS 💾
-- [ ] Plan new [NAS layout](docs/naslayout.md)
+- [x] Plan new [NAS layout](docs/naslayout.md)
 - [ ] [Backup NAS](docs/oldnasbackup.md)
 - [ ] Rebuild NAS
 - [ ] Reload NAS

@@ -1,41 +1,37 @@
 ## NAS Layout
 
-``` text
+```
 tank/                     (Pool)
-├── mac-backups/          (Dataset - Generic preset, NO SHARE)
-│   ├── amanda/           (Dataset - Generic preset, SMB as TimeMachine)
-│   ├── damien/           (Dataset - Generic preset, SMB as TimeMachine)
-│   ├── deacon/           (Dataset - Generic preset, SMB as TimeMachine)
-│   └── zachary/          (Dataset - Generic preset, SMB as TimeMachine)
-├── app-backups/          (Dataset - Generic preset, NFS)
-├── personal-homes/       (Dataset - SMB preset, SMB as TrueNAS Home Share)
-│   ├── damien/           (Directory - auto-created on 1st login)
-│   └── ...
-├── media/                (Dataset - Generic preset, NFS and SMB)
-│   ├── books/            (Directory)
-│   ├── movies/           (Directory)
-│   ├── music/            (Directory)
-│   └── shows/            (Directory)
-├── archive/              (Dataset - Generic preset, SMB)
-│   ├── documents/        (Directory)
-│   ├── photos/           (Directory)
-│   └── videos/           (Directory)
-├── git-server/           (Dataset - Generic preset, NFS)
-└── games/                (Dataset - Generic preset, SMB and NFS)
-    ├── dat-files/        (Directory)
-    ├── inbound-staging/  (Dataset - Generic preset, SMB)
-    └── roms/             (Dataset - Generic preset, SMB and NFS)
-        ├── bios/         (Directory)
-        ├── metadata/     (Directory)
-        │   ├── boxart/   (Directory)
-        │   ├── manuals/  (Directory)
-        │   └── ...
-        ├── atari2600/    (Directory)
-        ├── gba/          (Directory)
-        ├── gbc/          (Directory)
-        └── ...
+├── timemachine/          (Dataset - NO SHARE)
+│   ├── archive/          (Dataset - SMB: single user)
+│   ├── damien/           (Dataset - SMB: single user, quota)
+│   └── ...               
+├── archive/              (Dataset - SMB: all users)
+│   ├── documents/        (Plain Directory)
+│   ├── videos/           (Plain Directory)
+│   ├── unsorted/         (Plain Directory)
+│   └── photos/           (Plain Directory)
+├── users/                (Dataset - NO SHARE)
+│   ├── damien/           (Dataset - SMB: single user, quota)
+│   └── ...               
+├── infra/                (Dataset - SMB: all users)
+│   ├── isos/             (Dataset - NFS: ro)
+│   └── ...               
+├── media/                (Dataset - SMB: all users, NFS: ro)
+│   ├── shows/            (Plain Directory)
+│   ├── music/            (Plain Directory)
+│   ├── books/            (Plain Directory)
+│   └── movies/           (Plain Directory)
+├── retro-gaming/         (Dataset - NO SHARE)
+│   ├── games/            (Dataset - SMB: all users, NFS: rw,ro)
+│   ├── inbound-staging/  (Dataset - SMB: all users, NFS: rw)
+│   └── dat-files/        (Dataset - SMB: all users, NFS: ro)
+├── git-server/           (Dataset - NFS: rw)
+└── app-backups/          (Dataset - NFS: rw)
+
+
+
 
 ```
-
 
 [↩️ Back to the README](../README.md)

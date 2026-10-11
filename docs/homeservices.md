@@ -16,9 +16,9 @@
   - Prometheus
   - Grafana
 - AI Tools:
-  - UI - Open-WebUI?
-  - Search - SearXNG?
-  - Hosting - RHAIIS, vLLM?
+  - UI - [Open-WebUI](https://openwebui.com), ~~[LibreChat](https://www.librechat.ai)~~,?
+  - Search - [SearXNG](https://docs.searxng.org),?
+  - Hosting - RHAIIS, vLLM,?
 
 
 [↩️ Back to the README](../README.md)
