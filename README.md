@@ -13,9 +13,9 @@ Starting in October 2026, this will be the new home for all things home lab and 
 
 ### NAS 💾
 - [x] Plan new [NAS layout](docs/naslayout.md)
-- [ ] [Backup NAS](docs/oldnasbackup.md)
-- [ ] Rebuild NAS
-- [ ] Reload NAS
+- [x] [Backup NAS](docs/oldnasbackup.md)
+- [x] Rebuild NAS
+- [x] Reload NAS
 - [ ] Create snapshot policies
 - [ ] Plan off-site backups
 - [ ] Implement off-site backups

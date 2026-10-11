@@ -27,12 +27,12 @@
 
 - [x] archive
 - [x] development
-- [ ] deversma
-  - [ ] TM-
-  - [ ] TM0
-  - [ ] TM1
-  - [ ] TM2
-  - [ ] TM3
+- [x] deversma
+  - [x] TM-
+  - [x] TM0
+  - [x] TM1
+  - [x] TM2
+  - [x] TM3
   - [x] TM4
   - [x] TMA
 - [x] documents
